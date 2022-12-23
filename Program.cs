@@ -22,7 +22,7 @@ namespace YoutubeVideoDownloader
             try { System.IO.Directory.Delete(AppDomain.CurrentDomain.BaseDirectory + "Baner",true); } catch { }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new MainUI());
         }
     }
 }

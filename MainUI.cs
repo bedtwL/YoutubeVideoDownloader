@@ -18,13 +18,15 @@ using System.IO;
 
 namespace YoutubeVideoDownloader
 {
-    public partial class Form1 : Form
+    public partial class MainUI : Form
     {
         public static Video Video;
         
-        public Form1()
+        public MainUI()
         {
             InitializeComponent();
+            try { textBox1.Text = System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "CONTACT"); } catch { }
+         
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -112,28 +114,12 @@ namespace YoutubeVideoDownloader
                     LastUrl = thumbnail.Url;
                     //pictureBox1.BackgroundImage = new Bitmap(thumbnail.Url);
                 }
-                catch (Exception ex) {  }
+                catch {  }
 
             }
-            Random rd = new Random();
 
-            System.IO.Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Baner");
-
-            string FileNameImg = rd.Next(0, 999).ToString() + ".jpg";
-            using (var client = new WebClient())
-            {
-                try
-                {
-                    client.DownloadFile(new Uri(LastUrl), FileNameImg);
-
-                }
-                catch (Exception ex) {  }
-
-            }
            
-                System.IO.File.Copy(AppDomain.CurrentDomain.BaseDirectory + FileNameImg, AppDomain.CurrentDomain.BaseDirectory + "Baner\\" + FileNameImg);
-            pictureBox1.BackgroundImage = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "Baner\\" + FileNameImg);
-            System.IO.File.Delete(AppDomain.CurrentDomain.BaseDirectory+FileNameImg);
+            pictureBox1.LoadAsync(LastUrl);
             LastUrl = null;
             var youtube = new YoutubeClient();
             var channel = await youtube.Channels.GetAsync(Video.Author.ChannelId);
@@ -148,32 +134,18 @@ namespace YoutubeVideoDownloader
                     LastUrl = thumbnail.Url;
                     //pictureBox1.BackgroundImage = new Bitmap(thumbnail.Url);
                 }
-                catch (Exception ex) { }
+                catch{ }
 
             }
 
 
-            System.IO.Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Baner");
 
-            FileNameImg = rd.Next(0, 999).ToString() + ".jpg";
-            using (var client = new WebClient())
-            {
-                try
-                {
-                    client.DownloadFile(new Uri(LastUrl), FileNameImg);
-
-                }
-                catch (Exception ex) {}
-
-            }
+            pictureBox2.LoadAsync(LastUrl);
            
-                System.IO.File.Copy(AppDomain.CurrentDomain.BaseDirectory + FileNameImg, AppDomain.CurrentDomain.BaseDirectory + "Baner\\" + FileNameImg);
-
-            System.IO.File.Delete(AppDomain.CurrentDomain.BaseDirectory+FileNameImg);
            
            
             
-                pictureBox2.BackgroundImage = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory + "Baner\\" + FileNameImg);
+                
             
             foreach (Control control in this.Controls)
             {
@@ -187,7 +159,7 @@ namespace YoutubeVideoDownloader
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            this.ShowIcon = false;
         }
 
         private async void button2_Click(object sender, EventArgs e)
